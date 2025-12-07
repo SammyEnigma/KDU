@@ -342,6 +342,7 @@ ULONG_PTR KDUGetProtectionOffset(
     case NT_WIN10_21H1:
     case NT_WIN10_21H2:
     case NT_WIN10_22H2:
+    case NT_WINSRV_21H1:
     case NT_WIN11_21H2:
     case NT_WIN11_22H2:
     case NT_WIN11_23H2:
@@ -534,6 +535,7 @@ BOOL KDUControlProcessMitigationFlags(
             case NT_WIN10_21H1:
             case NT_WIN10_21H2:
             case NT_WIN10_22H2:
+            case NT_WINSRV_21H1:
             case NT_WIN11_21H2:
             case NT_WIN11_22H2:
             case NT_WIN11_23H2:
