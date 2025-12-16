@@ -863,6 +863,21 @@ KDU_DB_ENTRY gProvEntry[] = {
         (LPWSTR)L"ThrottleStop",
         (LPWSTR)L"ThrottleStop",
         (LPWSTR)L"TechPowerUp"
+    },
+
+    {
+        KDU_MIN_NTBUILDNUMBER,
+        KDU_MAX_NTBUILDNUMBER,
+        IDR_TPWSAV,
+        KDU_PROVIDER_TOSHIBA,
+        KDU_VICTIM_DEFAULT,
+        SourceBaseNone,
+        KDUPROV_FLAGS_SIGNATURE_WHQL | KDUPROV_FLAGS_USE_SUPERFETCH,
+        KDUPROV_SC_ALL_DEFAULT,
+        (LPWSTR)L"Toshiba power saving driver for laptops",
+        (LPWSTR)L"TPwSav",
+        (LPWSTR)L"EBIoDispatch",
+        (LPWSTR)L"Compal Electronics"
     }
 
 };

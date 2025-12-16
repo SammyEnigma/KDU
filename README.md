@@ -171,7 +171,8 @@ Note: Provider with Id 0 is assumed as default if no -prv command is specified.
 | 52     | Intel          | PmxDrv  | Intel(R) Management Engine Tools Driver    | 1.0.0.1003 and below       |                      |
 | 53     | Jun Liu        | HwRwDrv  | Hardware read & write driver    | 1.0.0.6 and below       |                      |
 | 54     | NetEase        | NeacSafe64  | NeacSafe64 mini-filter driver    | 1.0.0.1 and below       |                      |
-| 55     | TechPowerUp    | ThrottleStop  | ThrottleStop                       | 3.0.0. 0 and below             |                      |
+| 55     | TechPowerUp    | ThrottleStop  | ThrottleStop                       | 3.0.0.0 and below             |                      |
+| 56     | Toshiba        | TPwSav        | Toshiba power saving driver for laptops | 2.0.0.2 and below             |                      |
 
 MSFT blacklist types:
 * Cert - by certificate used to sign the driver which makes it possible to ban huge number of files at one time.
@@ -237,6 +238,7 @@ MSFT blacklist types:
 |53|WINRING0||**File(SHA1):** DB8BCB8693DDF715552F85B8E2628F060070F920<br>**Authenticode(SHA1):** 8C40A82DF3D606A87DF243C787283C26CE9B0458<br>**Page(SHA1):** F7362528C0118F895D4D51588102C51A09B1691C<br>**Page(SHA256):** 2A8B9C786DEA17F00E105BFEF82B723E2578150E814DD9A94ED007275C96AC25|
 |54|Original|CVE-2025-45737|**File(SHA1):** 7E6DD5F1363C3070C59378EC8B23B6EC7B5671B4<br>**Authenticode(SHA1):** 5C41FA80052C332F7D6323C91E84E1204BA1C1C7<br>**Page(SHA1):** 5670C9130CC8997FBA6BD1C615F0DA97DC1FD43C<br>**Page(SHA256):** 34B6E417ABA41F5C7D7EE260AF1F56D9A74519F64B8E15BB510A295D2F9ED464|
 |55|Original|CVE-2025-7771|**File(SHA1):** 82ED942A52CDCF120A8919730E00BA37619661A3<br>**Authenticode(SHA1):** 77BADFEEBC7F448E6B8A52DCF15F48506A0E9A58<br>**Page(SHA1):** 42E937C9E56931AFDE500D68CDA682F8A5997CAF<br>**Page(SHA256):** 05E896E9337F2F6119571B31F3E5C279B357631C439912172E07526A4B5C23A5|
+|56|Original||**File(SHA1):** C1130E09831C7A2E0CC8BA7335E702910B25F526<br>**Authenticode(SHA1):** 8057487B702996C56D4CBB96A0C63A6ED82271B5<br>**Page(SHA1):** 7A1F9284A89B31BF572487F3021415AA0B583F18<br>**Page(SHA256):** 8E141BAB9656CB687407C0BDF8488FCD80631DA8EDE60C12EDF5DDC6D76AF1EC|
 
 ###### *At commit time, data may be inaccurate.
 
