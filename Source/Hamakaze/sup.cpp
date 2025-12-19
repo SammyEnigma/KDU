@@ -3850,7 +3850,7 @@ NTSTATUS supQuerySuperfetchInformation(
     superfetchInfo.Length = Length;
 
     ntStatus = NtQuerySystemInformation(
-        (SYSTEM_INFORMATION_CLASS)79,
+        SystemSuperfetchInformation,
         &superfetchInfo,
         sizeof(superfetchInfo),
         &returnedLength);

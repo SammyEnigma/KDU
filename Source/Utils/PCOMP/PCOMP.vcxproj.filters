@@ -36,6 +36,9 @@
     <ClCompile Include="..\..\Shared\minirtl\_strend.c">
       <Filter>minirtl</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Shared\minirtl\_strcmpi.c">
+      <Filter>minirtl</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Shared\minirtl\minirtl.h">
