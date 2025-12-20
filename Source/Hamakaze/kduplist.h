@@ -50,6 +50,7 @@
 #include "idrv/evga.h"
 #include "idrv/netease.h"
 #include "idrv/tpup.h"
+#include "idrv/tpw.h"
 
 //
 // Victims public array.
@@ -1545,6 +1546,32 @@ static KDU_PROVIDER g_KDUProviders[] =
         (provQueryPML4)NULL,
         (provReadPhysicalMemory)TpupReadPhysicalMemory,
         (provWritePhysicalMemory)TpupWritePhysicalMemory,
+
+        (provValidatePrerequisites)TpupValidatePrerequisites,
+
+        (provOpenProcess)NULL
+    },
+
+    {
+        NULL,
+
+        (provStartVulnerableDriver)KDUProvStartVulnerableDriver,
+        (provStopVulnerableDriver)KDUProvStopVulnerableDriver,
+
+        (provRegisterDriver)NULL,
+        (provUnregisterDriver)NULL,
+        (provPreOpenDriver)NULL,
+        (provPostOpenDriver)KDUProviderPostOpen,
+        (provMapDriver)KDUMapDriver,
+        (provControlDSE)KDUControlDSE,
+
+        (provReadKernelVM)TpwReadKernelVirtualMemory,
+        (provWriteKernelVM)TpwWriteKernelVirtualMemory,
+
+        (provVirtualToPhysical)NULL,
+        (provQueryPML4)NULL,
+        (provReadPhysicalMemory)TpwReadPhysicalMemory,
+        (provWritePhysicalMemory)TpwWritePhysicalMemory,
 
         (provValidatePrerequisites)TpupValidatePrerequisites,
 
