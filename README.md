@@ -1,5 +1,5 @@
 # KDU
-[![Build status](https://ci.appveyor.com/api/projects/status/pxpwehogor7x4mqa?svg=true)](https://ci.appveyor.com/project/hfiref0x/kdu)
+[![Build status](https://img.shields.io/appveyor/build/hfiref0x/kdu?logo=appveyor)](https://ci.appveyor.com/project/hfiref0x/kdu)
 [![Visitors](https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fgithub.com%2Fhfiref0x%2Fkdu&countColor=%23263759&style=flat)](https://visitorbadge.io/status?path=https%3A%2F%2Fgithub.com%2Fhfiref0x%2Fkdu)
 
 ## Kernel Driver Utility
@@ -324,4 +324,4 @@ They are used in multiple products from hardware vendors, mostly in unmodified s
 
 # Authors
 
-(c) 2020 - 2025 KDU Project
+(c) 2020 - 2026 KDU Project
