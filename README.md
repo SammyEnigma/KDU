@@ -277,6 +277,10 @@ Anticheat, antimalware incompatibilities will be ignored, that's your own respon
 
 Using this program might crash your computer with a BSOD. Compiled binary and source code are provided AS-IS in the hope they will be useful BUT WITHOUT WARRANTY OF ANY KIND. Since KDU relies on completely bugged, vulnerable drivers, it is highly recommended to use it on virtual machines only.
 
+# Changelog
+
+https://github.com/hfiref0x/KDU/tree/master/CHANGELOG.txt
+
 # Third party code usage
 
 * TinyAES, https://github.com/kokke/tiny-AES-c
