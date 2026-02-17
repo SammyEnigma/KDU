@@ -1,12 +1,12 @@
 /*******************************************************************************
 *
-*  (C) COPYRIGHT AUTHORS, 2022
+*  (C) COPYRIGHT AUTHORS, 2022 - 2026
 *
 *  TITLE:       IPCSVC.CPP
 *
-*  VERSION:     1.20
+*  VERSION:     1.46
 *
-*  DATE:        10 Feb 2022
+*  DATE:        12 Feb 2026
 *
 *  Inter-process communication, simplified ALPC server.
 *
@@ -66,6 +66,9 @@ NTSTATUS IpcpCreateServerPort(
         RtlAddAccessAllowedAce(dacl, ACL_REVISION, PORT_CONNECT, &everyoneSid);
         RtlSetDaclSecurityDescriptor(pSD, TRUE, dacl, FALSE);
     }
+    else {
+        return STATUS_MEMORY_NOT_ALLOCATED;
+    }
 
     RtlInitUnicodeString(&portName, KDU_PORT_NAME);
     InitializeObjectAttributes(&attr, &portName, OBJ_CASE_INSENSITIVE, NULL, pSD);
@@ -75,7 +78,7 @@ NTSTATUS IpcpCreateServerPort(
 
     ntStatus = NtAlpcCreatePort(PortHandle, &attr, &portAttr);
 
-    if (pSD) supHeapFree(pSD);
+    supHeapFree(pSD);
 
     return ntStatus;
 }

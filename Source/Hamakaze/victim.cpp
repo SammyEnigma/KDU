@@ -1,12 +1,12 @@
 /*******************************************************************************
 *
-*  (C) COPYRIGHT AUTHORS, 2018 - 2025
+*  (C) COPYRIGHT AUTHORS, 2018 - 2026
 *
 *  TITLE:       VICTIM.CPP
 *
-*  VERSION:     1.45
+*  VERSION:     1.46
 *
-*  DATE:        30 Nov 2025
+*  DATE:        12 Feb 2026
 *
 *  Victim support routines.
 *
@@ -474,8 +474,6 @@ BOOL VpCreateFromExistingCallback(
     _In_opt_ pfnLoadDriverCallback Callback,
     _In_opt_ PVOID CallbackParam)
 {
-    UNREFERENCED_PARAMETER(ModuleBase);
-    UNREFERENCED_PARAMETER(ResourceId);
     UNREFERENCED_PARAMETER(Callback);
     UNREFERENCED_PARAMETER(CallbackParam);
 
@@ -607,7 +605,7 @@ BOOL VpQueryInformation(
             signatureSize = Context->Data.DispatchSignatureLength;
 
             sectionBase = ntsupLookupImageSectionByName((CHAR*)TEXT_SECTION,
-                TEXT_SECTION_LEGNTH,
+                TEXT_SECTION_LENGTH,
                 (PVOID)Context->Data.VictimImage,
                 &sectionSize);
 

@@ -1,12 +1,12 @@
 /*******************************************************************************
 *
-*  (C) COPYRIGHT AUTHORS, 2022 - 2023
+*  (C) COPYRIGHT AUTHORS, 2022 - 2026
 *
 *  TITLE:       ZEMANA.CPP
 *
-*  VERSION:     1.40
+*  VERSION:     1.46
 *
-*  DATE:        20 Oct 2023
+*  DATE:        12 Feb 2026
 *
 *  Zemana driver routines.
 *
@@ -547,7 +547,7 @@ BOOL WINAPI ZmOpenProcess(
         &ProcessId,
         sizeof(ProcessId),
         ProcessHandle,
-        sizeof(ProcessHandle));
+        (ULONG)sizeof(ProcessHandle));
 }
 
 /*

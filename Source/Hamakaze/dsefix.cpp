@@ -1,12 +1,12 @@
 /*******************************************************************************
 *
-*  (C) COPYRIGHT AUTHORS, 2014 - 2025
+*  (C) COPYRIGHT AUTHORS, 2014 - 2026
 *
 *  TITLE:       DSEFIX.CPP
 *
-*  VERSION:     1.45
+*  VERSION:     1.46
 *
-*  DATE:        02 Dec 2025
+*  DATE:        12 Feb 2026
 *
 *  CI DSE corruption related routines.
 *  Based on DSEFix v1.3
@@ -19,7 +19,6 @@
 *******************************************************************************/
 
 #include "global.h"
-
 
 /*
 * 
@@ -70,7 +69,7 @@ ULONG KDUpValidateInstructionBlock(
     if ((hs.flags & F_ERROR) || (hs.len != 3))
         return 0;
 
-    if (!(Code[offset] == 0x4C) && (Code[offset + 1] == 0x8B))
+    if (!(Code[offset] == 0x4C && Code[offset + 1] == 0x8B))
         return 0;
 
     offset += hs.len;

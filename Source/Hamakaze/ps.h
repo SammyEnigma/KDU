@@ -1,12 +1,12 @@
 /*******************************************************************************
 *
-*  (C) COPYRIGHT AUTHORS, 2018 - 2025
+*  (C) COPYRIGHT AUTHORS, 2018 - 2026
 *
 *  TITLE:       PS.H
 *
-*  VERSION:     1.45
+*  VERSION:     1.46
 *
-*  DATE:        01 Dec 2025
+*  DATE:        12 Feb 2026
 *
 *  Processes support prototypes and definitions.
 *
@@ -27,7 +27,7 @@
 #define PsProtectionOffset_18362 0x6FA
 #define PsProtectionOffset_18363 0x6FA
 #define PsProtectionOffset_19041 0x87A //same for 19042..19045
-#define PsProtectionOffset_26100 0x5FA //sane for 26100..26200 (24H2, 25H2)
+#define PsProtectionOffset_26100 0x5FA //same for 26100..26200 (24H2, 25H2)
 
 //RS3..RS4
 #define PsMitigationFlags1Offset_RS3    0x828
@@ -54,6 +54,16 @@
 
 #define EPROCESS_TO_PROTECTION(Object, Offset) ((ULONG_PTR)(Object) + (Offset))
 #define EPROCESS_TO_MITIGATIONFLAGS(Object, FlagsOffset) ((ULONG_PTR)(Object) + (FlagsOffset))
+
+typedef struct _KDU_EPROCESS_OFFSETS {
+    ULONG_PTR PsProtectionOffset;
+    ULONG_PTR MitigationFlags1Offset;
+    ULONG_PTR MitigationFlags2Offset;
+} KDU_EPROCESS_OFFSETS, * PKDU_EPROCESS_OFFSETS;
+
+BOOL KDUGetEprocessOffsets(
+    _In_ ULONG NtBuildNumber,
+    _Out_ PKDU_EPROCESS_OFFSETS Offsets);
 
 BOOL KDUUnprotectProcess(
     _In_ PKDU_CONTEXT Context,

@@ -1,12 +1,12 @@
 /*******************************************************************************
 *
-*  (C) COPYRIGHT AUTHORS, 2020 - 2023
+*  (C) COPYRIGHT AUTHORS, 2020 - 2026
 *
-*  TITLE:       GLOBAL.H
+*  TITLE:       MAIN.CPP
 *
-*  VERSION:     1.19
+*  VERSION:     1.46
 *
-*  DATE:        10 Dec 2023
+*  DATE:        12 Feb 2026
 *
 *  Tanikaze helper dll (part of KDU project).
 *

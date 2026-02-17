@@ -1,12 +1,12 @@
 /*******************************************************************************
 *
-*  (C) COPYRIGHT AUTHORS, 2023
+*  (C) COPYRIGHT AUTHORS, 2023 - 2026
 *
 *  TITLE:       SYM.CPP
 *
-*  VERSION:     1.31
+*  VERSION:     1.46
 *
-*  DATE:        08 Apr 2023
+*  DATE:        12 Feb 2026
 *
 *  Program symbols support routines.
 *
@@ -179,6 +179,10 @@ BOOL symInit()
         LPWSTR lpEnd = _strend(szFileName);
 
         _strcat(lpEnd, TEXT("dbghelp.dll"));
+
+        if (!RtlDoesFileExists_U(szFileName)) {
+            return FALSE;
+        }
 
         g_hDbgHelp = LoadLibrary(szFileName);
         if (g_hDbgHelp == NULL) {

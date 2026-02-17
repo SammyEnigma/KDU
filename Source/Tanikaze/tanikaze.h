@@ -1,12 +1,12 @@
 /*******************************************************************************
 *
-*  (C) COPYRIGHT AUTHORS, 2020 - 2025
+*  (C) COPYRIGHT AUTHORS, 2020 - 2026
 *
-*  TITLE:       CONSTS.H
+*  TITLE:       TANIKAZE.H
 *
-*  VERSION:     1.24
+*  VERSION:     1.46
 *
-*  DATE:        02 Dec 2025
+*  DATE:        12 Feb 2026
 *
 *  Tanikaze helper dll (part of KDU project).
 *

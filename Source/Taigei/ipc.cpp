@@ -1,12 +1,12 @@
 /*******************************************************************************
 *
-*  (C) COPYRIGHT AUTHORS, 2022 - 2023
+*  (C) COPYRIGHT AUTHORS, 2022 - 2026
 *
 *  TITLE:       IPC.CPP
 *
-*  VERSION:     1.21
+*  VERSION:     1.46
 *
-*  DATE:        10 Jun 2023
+*  DATE:        12 Feb 2026
 *
 *  Inter-process communication.
 *
@@ -20,6 +20,7 @@
 #include "global.h"
 
 #define IPC_GET_HANDLE 0x1337
+#define IPC_MAX_RETRY_COUNT 150
 
 NTSTATUS IpcConnectToPort(
     _In_ LPCWSTR PortName,
@@ -30,6 +31,7 @@ NTSTATUS IpcConnectToPort(
     HANDLE portHandle = NULL;
     SECURITY_QUALITY_OF_SERVICE securityQos;
     UNICODE_STRING portName;
+    ULONG retryCount = 0;
 
     securityQos.Length = sizeof(securityQos);
     securityQos.ImpersonationLevel = SecurityImpersonation;
@@ -44,9 +46,13 @@ NTSTATUS IpcConnectToPort(
             &securityQos,
             NULL, NULL, NULL, NULL, NULL);
 
-        Sleep(200);
+        if (NT_SUCCESS(ntStatus))
+            break;
 
-    } while (!NT_SUCCESS(ntStatus));
+        Sleep(200);
+        retryCount++;
+
+    } while (retryCount < IPC_MAX_RETRY_COUNT);  // ~30 seconds max
 
     *PortHandle = portHandle;
 

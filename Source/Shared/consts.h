@@ -1,12 +1,12 @@
 /*******************************************************************************
 *
-*  (C) COPYRIGHT AUTHORS, 2020 - 2025
+*  (C) COPYRIGHT AUTHORS, 2020 - 2026
 *
 *  TITLE:       CONSTS.H
 *
-*  VERSION:     1.45
+*  VERSION:     1.46
 *
-*  DATE:        02 Dec 2025
+*  DATE:        12 Feb 2026
 *
 *  Global consts.
 *
@@ -21,16 +21,16 @@
 
 #define KDU_VERSION_MAJOR       1
 #define KDU_VERSION_MINOR       4
-#define KDU_VERSION_REVISION    5
-#define KDU_VERSION_BUILD       2512
-#define KDU_COPYRIGHT_YEAR      2025
+#define KDU_VERSION_REVISION    6
+#define KDU_VERSION_BUILD       2602
+#define KDU_COPYRIGHT_YEAR      2026
 
 #define KDU_MIN_NTBUILDNUMBER   0x1DB1      //Windows 7 SP1
 #define KDU_MAX_NTBUILDNUMBER   0xFFFFFFFF  //Undefined
 
 #define IPC_GET_HANDLE          0x1337
 
-#define KDU_SYNC_MUTANT         0x2512
+#define KDU_SYNC_MUTANT         0x2602
 
 #define NT_REG_PREP             L"\\Registry\\Machine"
 #define DRIVER_REGKEY           L"%wS\\System\\CurrentControlSet\\Services\\%wS"
@@ -67,7 +67,7 @@
 #define SYSTEM_PID_MAGIC        4
 
 #define TEXT_SECTION            ".text"
-#define TEXT_SECTION_LEGNTH     sizeof(TEXT_SECTION)
+#define TEXT_SECTION_LENGTH     sizeof(TEXT_SECTION)
 
 #define SHELLCODE_SMALL         0x200
 

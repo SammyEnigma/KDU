@@ -1,12 +1,12 @@
 /*******************************************************************************
 *
-*  (C) COPYRIGHT AUTHORS, 2018 - 2025
+*  (C) COPYRIGHT AUTHORS, 2018 - 2026
 *
 *  TITLE:       PS.CPP
 *
-*  VERSION:     1.45
+*  VERSION:     1.46
 *
-*  DATE:        30 Nov 2025
+*  DATE:        12 Feb 2026
 *
 *  Processes DKOM related routines.
 *
@@ -293,7 +293,7 @@ VOID printProtection(
 }
 
 /*
-* printProtection
+* printMitigationFlags
 *
 * Purpose:
 *
@@ -310,33 +310,65 @@ VOID printMitigationFlags(
 }
 
 /*
-* KDUGetProtectionOffset
+* KDUGetEprocessOffsets
 *
 * Purpose:
 *
-* Get PS_PROTECTION offset for specific Windows version.
+* Get all EPROCESS offsets (PsProtection, MitigationFlags1, MitigationFlags2)
+* for specific Windows version.
 *
 */
-ULONG_PTR KDUGetProtectionOffset(
-    _In_ ULONG NtBuildNumber
+BOOL KDUGetEprocessOffsets(
+    _In_ ULONG NtBuildNumber,
+    _Out_ PKDU_EPROCESS_OFFSETS Offsets
 )
 {
+    Offsets->PsProtectionOffset = 0;
+    Offsets->MitigationFlags1Offset = 0;
+    Offsets->MitigationFlags2Offset = 0;
+
     switch (NtBuildNumber) {
+
     case NT_WIN8_BLUE:
-        return PsProtectionOffset_9600;
+        Offsets->PsProtectionOffset = PsProtectionOffset_9600;
+        break;
+
     case NT_WIN10_THRESHOLD1:
-        return PsProtectionOffset_10240;
+        Offsets->PsProtectionOffset = PsProtectionOffset_10240;
+        break;
+
     case NT_WIN10_THRESHOLD2:
-        return PsProtectionOffset_10586;
+        Offsets->PsProtectionOffset = PsProtectionOffset_10586;
+        break;
+
     case NT_WIN10_REDSTONE1:
-        return PsProtectionOffset_14393;
+        Offsets->PsProtectionOffset = PsProtectionOffset_14393;
+        break;
+
     case NT_WIN10_REDSTONE2:
+        Offsets->PsProtectionOffset = PsProtectionOffset_15063;
+        break;
+
     case NT_WIN10_REDSTONE3:
     case NT_WIN10_REDSTONE4:
+        Offsets->PsProtectionOffset = PsProtectionOffset_15063;
+        Offsets->MitigationFlags1Offset = PsMitigationFlags1Offset_RS3;
+        Offsets->MitigationFlags2Offset = PsMitigationFlags2Offset_RS3;
+        break;
+
     case NT_WIN10_REDSTONE5:
+        Offsets->PsProtectionOffset = PsProtectionOffset_15063;
+        Offsets->MitigationFlags1Offset = PsMitigationFlags1Offset_RS5;
+        Offsets->MitigationFlags2Offset = PsMitigationFlags2Offset_RS5;
+        break;
+
     case NT_WIN10_19H1:
     case NT_WIN10_19H2:
-        return PsProtectionOffset_15063;
+        Offsets->PsProtectionOffset = PsProtectionOffset_15063;
+        Offsets->MitigationFlags1Offset = PsMitigationFlags1Offset_18362;
+        Offsets->MitigationFlags2Offset = PsMitigationFlags2Offset_18362;
+        break;
+
     case NT_WIN10_20H1:
     case NT_WIN10_20H2:
     case NT_WIN10_21H1:
@@ -346,13 +378,36 @@ ULONG_PTR KDUGetProtectionOffset(
     case NT_WIN11_21H2:
     case NT_WIN11_22H2:
     case NT_WIN11_23H2:
-        return PsProtectionOffset_19041;
+        Offsets->PsProtectionOffset = PsProtectionOffset_19041;
+        Offsets->MitigationFlags1Offset = PsMitigationFlags1Offset_19041;
+        Offsets->MitigationFlags2Offset = PsMitigationFlags2Offset_19041;
+        break;
+
     case NT_WIN11_24H2:
     case NT_WIN11_25H2:
-        return PsProtectionOffset_26100;
+        Offsets->PsProtectionOffset = PsProtectionOffset_26100;
+        Offsets->MitigationFlags1Offset = PsMitigationFlags1Offset_26100;
+        Offsets->MitigationFlags2Offset = PsMitigationFlags2Offset_26100;
+        break;
+
     default:
-        return 0;
+        return FALSE;
     }
+
+    return TRUE;
+}
+
+BOOL KDUVerifyProviderCallbacksForPsPatch(
+    _In_ PKDU_CONTEXT Context
+)
+{
+    if (Context->Provider->Callbacks.ReadKernelVM == NULL ||
+        Context->Provider->Callbacks.WriteKernelVM == NULL)
+    {
+        return FALSE;
+    }
+
+    return TRUE;
 }
 
 /*
@@ -372,11 +427,15 @@ BOOL KDUControlProcessProtections(
     BOOL       bResult = FALSE;
     ULONG      Buffer;
     NTSTATUS   ntStatus;
-    ULONG_PTR  ProcessObject = 0, VirtualAddress = 0, Offset = 0;
+    ULONG_PTR  ProcessObject = 0, VirtualAddress = 0;
     HANDLE     hProcess = NULL;
 
+    KDU_EPROCESS_OFFSETS offsets;
     CLIENT_ID clientId;
     OBJECT_ATTRIBUTES obja;
+
+    if (!KDUVerifyProviderCallbacksForPsPatch(Context))
+        return FALSE;
 
     FUNCTION_ENTER_MSG(__FUNCTION__);
 
@@ -397,16 +456,16 @@ BOOL KDUControlProcessProtections(
 
             printf_s("[+] Process object (EPROCESS) found, 0x%llX\r\n", ProcessObject);
 
-            Offset = KDUGetProtectionOffset(Context->NtBuildNumber);
-            if (Offset == 0) {
-
+            if (!KDUGetEprocessOffsets(Context->NtBuildNumber, &offsets) ||
+                offsets.PsProtectionOffset == 0)
+            {
                 supPrintfEvent(kduEventError,
                     "[!] Unsupported WinNT version\r\n");
 
             }
             else {
 
-                VirtualAddress = EPROCESS_TO_PROTECTION(ProcessObject, Offset);
+                VirtualAddress = EPROCESS_TO_PROTECTION(ProcessObject, offsets.PsProtectionOffset);
 
                 printf_s("[+] EPROCESS->PS_PROTECTION, 0x%llX\r\n", VirtualAddress);
 
@@ -489,11 +548,15 @@ BOOL KDUControlProcessMitigationFlags(
     BOOL       bResult2 = TRUE;
     ULONG      Buffer1, Buffer2;
     NTSTATUS   ntStatus;
-    ULONG_PTR  ProcessObject = 0, VirtualAddress1 = 0, VirtualAddress2 = 0, Offset1 = 0, Offset2 = 0;
+    ULONG_PTR  ProcessObject = 0, VirtualAddress1 = 0, VirtualAddress2 = 0;
     HANDLE     hProcess = NULL;
 
+    KDU_EPROCESS_OFFSETS offsets;
     CLIENT_ID clientId;
     OBJECT_ATTRIBUTES obja;
+
+    if (!KDUVerifyProviderCallbacksForPsPatch(Context))
+        return FALSE;
 
     FUNCTION_ENTER_MSG(__FUNCTION__);
 
@@ -514,45 +577,10 @@ BOOL KDUControlProcessMitigationFlags(
 
             printf_s("[+] Process object (EPROCESS) found, 0x%llX\r\n", ProcessObject);
 
-            switch (Context->NtBuildNumber) {
-                //Started from RS3
-            case NT_WIN10_REDSTONE3:
-            case NT_WIN10_REDSTONE4:
-                Offset1 = PsMitigationFlags1Offset_RS3;
-                Offset2 = PsMitigationFlags2Offset_RS3;
-                break;
-            case NT_WIN10_REDSTONE5:
-                Offset1 = PsMitigationFlags1Offset_RS5;
-                Offset2 = PsMitigationFlags2Offset_RS5;
-                break;
-            case NT_WIN10_19H1:
-            case NT_WIN10_19H2:
-                Offset1 = PsMitigationFlags1Offset_18362;
-                Offset2 = PsMitigationFlags2Offset_18362;
-                break;
-            case NT_WIN10_20H1:
-            case NT_WIN10_20H2:
-            case NT_WIN10_21H1:
-            case NT_WIN10_21H2:
-            case NT_WIN10_22H2:
-            case NT_WINSRV_21H1:
-            case NT_WIN11_21H2:
-            case NT_WIN11_22H2:
-            case NT_WIN11_23H2:
-                Offset1 = PsMitigationFlags1Offset_19041;
-                Offset2 = PsMitigationFlags2Offset_19041;
-                break;
-            case NT_WIN11_24H2:
-            case NT_WIN11_25H2:
-                Offset1 = PsMitigationFlags1Offset_26100;
-                Offset2 = PsMitigationFlags2Offset_26100;
-                break;
-            default:
-                Offset1 = Offset2 = 0;
-                break;
-            }
-
-            if (Offset1 == 0 || Offset2 == 0) {
+            if (!KDUGetEprocessOffsets(Context->NtBuildNumber, &offsets) ||
+                offsets.MitigationFlags1Offset == 0 ||
+                offsets.MitigationFlags2Offset == 0)
+            {
 
                 supPrintfEvent(kduEventError,
                     "[!] Unsupported WinNT version\r\n");
@@ -560,8 +588,8 @@ BOOL KDUControlProcessMitigationFlags(
             }
             else {
 
-                VirtualAddress1 = EPROCESS_TO_MITIGATIONFLAGS(ProcessObject, Offset1);
-                VirtualAddress2 = EPROCESS_TO_MITIGATIONFLAGS(ProcessObject, Offset2);
+                VirtualAddress1 = EPROCESS_TO_MITIGATIONFLAGS(ProcessObject, offsets.MitigationFlags1Offset);
+                VirtualAddress2 = EPROCESS_TO_MITIGATIONFLAGS(ProcessObject, offsets.MitigationFlags2Offset);
 
                 printf_s("[+] EPROCESS->PS_MITIGATION_FLAGS1, 0x%llX\r\n", VirtualAddress1);
                 printf_s("[+] EPROCESS->PS_MITIGATION_FLAGS2, 0x%llX\r\n", VirtualAddress2);
