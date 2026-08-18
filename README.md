@@ -148,7 +148,7 @@ Complete working binaries include: kdu.exe (main executable) and drv64.dll (driv
 
 # Utils and Notes
 
-GenAsIo2Unlock is a special utility used to generate "unlocking" resources required for working with the AsIO2 driver. Full source of this utility is included in Source\Utils\GenAsIo2Unlock. Compiled binary is not provided.
+GenAsIo2Unlock is a special utility used to generate "unlocking" resources required for working with the AsIO2 driver. Full source of this utility is included in Source\Utils\GenAsIo2Unlock.
 
 # Reporting bugs and incompatibilities
 
